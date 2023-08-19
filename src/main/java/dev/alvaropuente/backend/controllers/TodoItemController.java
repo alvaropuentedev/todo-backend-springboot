@@ -12,7 +12,7 @@ import java.util.*;
 
 @RestController
 @AllArgsConstructor
-@CrossOrigin(origins = "http://localhost:4200")
+@CrossOrigin(origins = "https://todo-frontend-green.vercel.app/")
 @RequestMapping("/api")
 public class TodoItemController {
 
