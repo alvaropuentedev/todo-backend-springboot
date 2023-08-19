@@ -12,35 +12,34 @@ import java.util.*;
 
 @RestController
 @AllArgsConstructor
-@RequestMapping("/api/v1")
+@CrossOrigin(origins = "http://localhost:4200")
+@RequestMapping("/api")
 public class TodoItemController {
 
     private final TodoItemService todoItemService;
 
     @GetMapping("/todoitems")
     public ResponseEntity<?> getAllItems() {
-        Map<String, Object> map = new HashMap<>();
         try {
         List<TodoItem> todoItemList = todoItemService.getAllItems();
-        map.put("status", 200);
-        map.put("items", todoItemList);
-        return new ResponseEntity<>(map, HttpStatus.OK);
+        return new ResponseEntity<>(todoItemList, HttpStatus.OK);
         }
         catch (Exception e) {
+            Map<String, Object> map = new HashMap<>();
             map.put("message", e.getMessage());
             return new ResponseEntity<>(map, HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 
+    @GetMapping("/todoitems/{idItems}")
+    public TodoItem getItemById(@PathVariable Long idItems) {
+        return  todoItemService.getById(idItems).orElseThrow(
+                ()->new NoSuchElementException("Requested item not found "));
+    }
+
     @PostMapping("/todoitems")
     public TodoItem createItem(@RequestBody TodoItem todoItem) {
             return  todoItemService.save(todoItem);
-    }
-
-    @GetMapping("/todoitems/{idItems}")
-    public TodoItem getItemById(@PathVariable Long idItems) {
-            return  todoItemService.getById(idItems).orElseThrow(
-                    ()->new NoSuchElementException("Requested item not found "));
     }
 
     @PutMapping("/todoitems/{idItems}")
