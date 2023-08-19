@@ -28,6 +28,7 @@ public class TodoItemController {
             Map<String, Object> map = new HashMap<>();
             map.put("message", e.getMessage());
             return new ResponseEntity<>(map, HttpStatus.INTERNAL_SERVER_ERROR);
+            
         }
     }
 
