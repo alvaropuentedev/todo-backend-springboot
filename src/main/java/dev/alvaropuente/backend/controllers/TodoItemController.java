@@ -64,7 +64,7 @@ public class TodoItemController {
             todoItemService.delete(idItems);
             Map<String, String> message = new HashMap<>();
             message.put("message", idItems + " item removed");
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(message);
+            return ResponseEntity.status(HttpStatus.OK).body(message);
         } else {
             Map<String, String> message = new HashMap<>();
             message.put("message", idItems + " item not found or matched");
