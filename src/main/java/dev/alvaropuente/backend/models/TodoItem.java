@@ -13,7 +13,7 @@ import java.time.LocalDateTime;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-@Table(name = "todo_items", schema = "todo")
+@Table(name = "todo_items", schema = "public")
 public class TodoItem implements Serializable {
 
     @Id
@@ -21,8 +21,8 @@ public class TodoItem implements Serializable {
     private Long idItem;
 
     private String description;
-    private LocalDateTime createdAt;
-    private LocalDateTime updatedAt;
+//    private LocalDateTime createdAt;
+//    private LocalDateTime updatedAt;
 
 
 

@@ -28,13 +28,17 @@ public class TodoItemService {
     }
     @Transactional
     public TodoItem save(TodoItem todoItem) {
-        if(todoItem.getIdItem() == null) {
-            todoItem.setCreatedAt(LocalDateTime.now());
-        }
-
-        todoItem.setUpdatedAt(LocalDateTime.now());
         return todoItemRepository.save(todoItem);
     }
+//    @Transactional
+//    public TodoItem save(TodoItem todoItem) {
+//        if(todoItem.getIdItem() == null) {
+//            todoItem.setCreatedAt(LocalDateTime.now());
+//        }
+//
+//        todoItem.setUpdatedAt(LocalDateTime.now());
+//        return todoItemRepository.save(todoItem);
+//    }
     @Transactional
     public void delete(Long id) {
         todoItemRepository.deleteById(id);
