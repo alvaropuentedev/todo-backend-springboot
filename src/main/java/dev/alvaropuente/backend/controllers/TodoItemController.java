@@ -19,17 +19,8 @@ public class TodoItemController {
     private final TodoItemService todoItemService;
 
     @GetMapping("/todoitems")
-    public ResponseEntity<?> getAllItems() {
-        try {
-        List<TodoItem> todoItemList = todoItemService.getAllItems();
-        return new ResponseEntity<>(todoItemList, HttpStatus.OK);
-        }
-        catch (Exception e) {
-            Map<String, Object> map = new HashMap<>();
-            map.put("message", e.getMessage());
-            return new ResponseEntity<>(map, HttpStatus.INTERNAL_SERVER_ERROR);
-            
-        }
+    public List<TodoItem> getAllItems() {
+       return todoItemService.getAllItems();
     }
 
     @GetMapping("/todoitems/{idItems}")
@@ -59,12 +50,18 @@ public class TodoItemController {
     }
 
     @DeleteMapping("/todoitems/{idItems}")
-    public ResponseEntity<String> deleteItem(@PathVariable Long idItems) {
+    public ResponseEntity<?> deleteItem(@PathVariable Long idItems) {
         if (todoItemService.existById(idItems)) {
             todoItemService.delete(idItems);
-            return ResponseEntity.ok(idItems + " item removed");
+            Map<String, String> message = new HashMap<>();
+            message.put("message", idItems + " item removed");
+            return ResponseEntity.ok(message);
         } else {
-            return ResponseEntity.notFound().build();
+            Map<String, String> message = new HashMap<>();
+            message.put("message", idItems + " item not found or matched");
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(message);
         }
     }
+
+
 }

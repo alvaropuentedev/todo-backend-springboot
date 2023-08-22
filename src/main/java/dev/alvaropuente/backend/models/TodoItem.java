@@ -18,7 +18,7 @@ public class TodoItem implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long idItem;
+    private Long id_item;
 
     private String description;
 //    private LocalDateTime createdAt;
