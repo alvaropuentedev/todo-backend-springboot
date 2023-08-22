@@ -59,18 +59,12 @@ public class TodoItemController {
     }
 
     @DeleteMapping("/todoitems/{idItems}")
-    public ResponseEntity<?> deleteItem(@PathVariable Long idItems) {
+    public ResponseEntity<String> deleteItem(@PathVariable Long idItems) {
         if (todoItemService.existById(idItems)) {
             todoItemService.delete(idItems);
-            Map<String, String> message = new HashMap<>();
-            message.put("message", idItems + " item removed");
-            return ResponseEntity.status(HttpStatus.OK).body(message);
+            return ResponseEntity.ok(idItems + " item removed");
         } else {
-            Map<String, String> message = new HashMap<>();
-            message.put("message", idItems + " item not found or matched");
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(message);
+            return ResponseEntity.notFound().build();
         }
     }
-
-
 }
