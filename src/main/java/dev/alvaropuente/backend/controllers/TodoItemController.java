@@ -19,19 +19,27 @@ public class TodoItemController {
     private final TodoItemService todoItemService;
 
     @GetMapping("/todoitems")
-    public List<TodoItem> getAllItems() {
-       return todoItemService.getAllItems();
+    public ResponseEntity<?> getAllItems() {
+        try {
+            List<TodoItem> todoItemList = todoItemService.getAllItems();
+            return new ResponseEntity<>(todoItemList, HttpStatus.OK);
+        } catch (Exception e) {
+            Map<String, Object> map = new HashMap<>();
+            map.put("message", e.getMessage());
+            return new ResponseEntity<>(map, HttpStatus.INTERNAL_SERVER_ERROR);
+
+        }
     }
 
     @GetMapping("/todoitems/{idItems}")
     public TodoItem getItemById(@PathVariable Long idItems) {
-        return  todoItemService.getById(idItems).orElseThrow(
-                ()->new NoSuchElementException("Requested item not found "));
+        return todoItemService.getById(idItems).orElseThrow(
+                () -> new NoSuchElementException("Requested item not found "));
     }
 
     @PostMapping("/todoitems")
     public TodoItem createItem(@RequestBody TodoItem todoItem) {
-            return  todoItemService.save(todoItem);
+        return todoItemService.save(todoItem);
     }
 
     @PutMapping("/todoitems/{idItems}")
@@ -55,7 +63,7 @@ public class TodoItemController {
             todoItemService.delete(idItems);
             Map<String, String> message = new HashMap<>();
             message.put("message", idItems + " item removed");
-            return ResponseEntity.ok(message);
+            return ResponseEntity.status(HttpStatus.OK).body(message);
         } else {
             Map<String, String> message = new HashMap<>();
             message.put("message", idItems + " item not found or matched");
