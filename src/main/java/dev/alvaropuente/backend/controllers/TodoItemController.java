@@ -20,11 +20,12 @@ public class TodoItemController {
 
     @GetMapping("/todoitems")
     public ResponseEntity<?> getAllItems() {
+            Map<String, Object> map = new HashMap<>();
         try {
             List<TodoItem> todoItemList = todoItemService.getAllItems();
-            return new ResponseEntity<>(todoItemList, HttpStatus.OK);
+            map.put("items", todoItemList);
+            return new ResponseEntity<>(map, HttpStatus.OK);
         } catch (Exception e) {
-            Map<String, Object> map = new HashMap<>();
             map.put("message", e.getMessage());
             return new ResponseEntity<>(map, HttpStatus.INTERNAL_SERVER_ERROR);
 
