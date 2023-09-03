@@ -1,5 +1,9 @@
-package dev.alvaropuente.backend.auth;
+package dev.alvaropuente.backend.controllers;
 
+import dev.alvaropuente.backend.auth.AuthResponse;
+import dev.alvaropuente.backend.services.AuthService;
+import dev.alvaropuente.backend.auth.LoginRequest;
+import dev.alvaropuente.backend.auth.RegisterRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
