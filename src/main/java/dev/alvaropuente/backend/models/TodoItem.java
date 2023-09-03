@@ -13,7 +13,7 @@ import java.time.LocalDateTime;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-@Table(name = "todo_items", schema = "public")
+@Table(name = "items", schema = "todo")
 public class TodoItem implements Serializable {
 
     @Id
