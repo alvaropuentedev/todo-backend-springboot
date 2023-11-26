@@ -12,7 +12,7 @@ import java.util.*;
 
 @RestController
 @AllArgsConstructor
-@CrossOrigin(origins = "*")
+//@CrossOrigin(origins = "*")
 @RequestMapping("/api")
 public class TodoItemController {
 
