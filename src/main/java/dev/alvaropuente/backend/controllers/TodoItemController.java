@@ -12,7 +12,7 @@ import java.util.*;
 
 @RestController
 @AllArgsConstructor
-//@CrossOrigin(origins = "*")
+@CrossOrigin(origins = {"https://todo-angular-beta.vercel.app"})
 @RequestMapping("/api")
 public class TodoItemController {
 
