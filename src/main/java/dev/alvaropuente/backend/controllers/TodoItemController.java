@@ -24,7 +24,6 @@ public class TodoItemController {
             Map<String, Object> map = new HashMap<>();
         try {
             List<TodoItem> todoItemList = todoItemService.getAllItems();
-            map.put("items", todoItemList);
             return new ResponseEntity<>(todoItemList, HttpStatus.OK);
         } catch (Exception e) {
             map.put("message", e.getMessage());
