@@ -11,8 +11,8 @@ import org.springframework.web.bind.annotation.*;
 import java.util.*;
 
 @RestController
-@AllArgsConstructor
 @CrossOrigin(origins = {"https://todo-angular-beta.vercel.app"})
+@AllArgsConstructor
 @RequestMapping("/api")
 public class TodoItemController {
 
