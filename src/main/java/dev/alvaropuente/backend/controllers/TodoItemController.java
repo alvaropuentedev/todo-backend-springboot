@@ -25,7 +25,7 @@ public class TodoItemController {
         try {
             List<TodoItem> todoItemList = todoItemService.getAllItems();
             map.put("items", todoItemList);
-            return new ResponseEntity<>(map, HttpStatus.OK);
+            return new ResponseEntity<>(todoItemList, HttpStatus.OK);
         } catch (Exception e) {
             map.put("message", e.getMessage());
             return new ResponseEntity<>(map, HttpStatus.INTERNAL_SERVER_ERROR);
