@@ -23,7 +23,7 @@ public class SecurityConfig {
 	private final AuthenticationProvider authProvider;
 
 	@Bean
-	public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
+	private SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
 		return http.csrf(csrf -> csrf.disable())
 				.authorizeHttpRequests(
 						authRequest -> authRequest
