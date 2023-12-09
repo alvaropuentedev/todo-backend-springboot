@@ -34,9 +34,6 @@ public class User implements UserDetails {
 
     @Enumerated(EnumType.STRING)
     Role role;
-    
-    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<TodoItem> todoItems;
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
