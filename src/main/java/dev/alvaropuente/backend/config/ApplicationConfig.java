@@ -1,9 +1,5 @@
 package dev.alvaropuente.backend.config;
 
-import dev.alvaropuente.backend.repositories.UserRepository;
-import lombok.Builder;
-import lombok.RequiredArgsConstructor;
-import org.hibernate.service.UnknownServiceException;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -14,6 +10,9 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+
+import dev.alvaropuente.backend.repositories.UserRepository;
+import lombok.RequiredArgsConstructor;
 
 @Configuration
 @RequiredArgsConstructor

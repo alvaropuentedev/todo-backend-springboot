@@ -1,76 +1,59 @@
 package dev.alvaropuente.backend.controllers;
 
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.validation.annotation.Validated;
+import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 import dev.alvaropuente.backend.models.TodoItem;
 import dev.alvaropuente.backend.services.TodoItemService;
 import lombok.AllArgsConstructor;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
-
-import java.util.*;
 
 @RestController
 //@CrossOrigin(origins = {"https://todo-angular-beta.vercel.app"})
-@CrossOrigin(origins = {"https://todo-angular-beta.vercel.app", "http://localhost:4200/"})
+@CrossOrigin(origins = { "https://todo-angular-beta.vercel.app", "http://localhost:4200/" })
 @AllArgsConstructor
 @RequestMapping("/api")
 public class TodoItemController {
 
-    private final TodoItemService todoItemService;
+	@Autowired
+	private final TodoItemService todoItemService;
 
-    @GetMapping("/todoitems")
-    public ResponseEntity<?> getAllItems() {
-            Map<String, Object> map = new HashMap<>();
-        try {
-            List<TodoItem> todoItemList = todoItemService.getAllItems();
-            return new ResponseEntity<>(todoItemList, HttpStatus.OK);
-        } catch (Exception e) {
-            map.put("message", e.getMessage());
-            return new ResponseEntity<>(map, HttpStatus.INTERNAL_SERVER_ERROR);
+	@GetMapping("/user/{userId}/items")
+	public ResponseEntity<?> getAllItemsByUserId(@PathVariable(value = "userId") Long userId) {
+		Map<String, Object> map = new HashMap<>();
+		try {
+			List<TodoItem> todoItemList = todoItemService.getAllItemsByUserId(userId);
+			return new ResponseEntity<>(todoItemList, HttpStatus.OK);
+		} catch (Exception e) {
+			map.put("message", e.getMessage());
+			return new ResponseEntity<>(map, HttpStatus.INTERNAL_SERVER_ERROR);
 
-        }
-    }
+		}
+	}
 
-    @GetMapping("/todoitems/{idItems}")
-    public TodoItem getItemById(@PathVariable Long idItems) {
-        return todoItemService.getById(idItems).orElseThrow(
-                () -> new NoSuchElementException("Requested item not found "));
-    }
+	@PostMapping("/user/{userId}/items")
+	public TodoItem createItem(@PathVariable(value = "userId") Long userId, @Validated @RequestBody TodoItem todoItem) {
+		return todoItemService.createItem(userId, todoItem);
+	}
 
-    @PostMapping("/todoitems")
-    public TodoItem createItem(@RequestBody TodoItem todoItem) {
-        return todoItemService.save(todoItem);
-    }
-
-    @PutMapping("/todoitems/{idItems}")
-    public ResponseEntity<?> updateItem(@RequestBody TodoItem itemParams, @PathVariable Long idItems) {
-        if (todoItemService.existById(idItems)) {
-            TodoItem todoItem = todoItemService.getById(idItems).orElseThrow(
-                    () -> new NoSuchElementException("Requested item not found"));
-            todoItem.setDescription(itemParams.getDescription());
-            todoItemService.save(todoItem);
-            return ResponseEntity.ok().body(todoItem);
-        } else {
-            Map<String, String> message = new HashMap<>();
-            message.put("message", idItems + "item not found or matched");
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(message);
-        }
-    }
-
-    @DeleteMapping("/todoitems/{idItems}")
-    public ResponseEntity<?> deleteItem(@PathVariable Long idItems) {
-        if (todoItemService.existById(idItems)) {
-            todoItemService.delete(idItems);
-            Map<String, String> message = new HashMap<>();
-            message.put("message", idItems + " item removed");
-            return ResponseEntity.status(HttpStatus.OK).body(message);
-        } else {
-            Map<String, String> message = new HashMap<>();
-            message.put("message", idItems + " item not found or matched");
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(message);
-        }
-    }
-
+	@DeleteMapping("/user/{userId}/items/{itemId}")
+	public ResponseEntity<?> deleteItem(@PathVariable(value = "userId") Long userId,
+			@PathVariable(value = "itemId") Long itemId) {
+		todoItemService.deleteItem(userId, itemId);
+		return ResponseEntity.ok().build();
+	}
 
 }

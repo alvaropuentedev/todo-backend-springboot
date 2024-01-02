@@ -1,9 +1,10 @@
 package dev.alvaropuente.backend.repositories;
 
-import dev.alvaropuente.backend.models.User;
+import java.util.Optional;
+
 import org.springframework.data.jpa.repository.JpaRepository;
 
-import java.util.Optional;
+import dev.alvaropuente.backend.models.User;
 
 public interface UserRepository extends JpaRepository<User, Long> {
     Optional<User> findByUsername(String username);
