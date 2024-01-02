@@ -6,7 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import dev.alvaropuente.backend.models.TodoItem;
+import dev.alvaropuente.backend.models.Item;
 import dev.alvaropuente.backend.repositories.TodoItemRepository;
 import dev.alvaropuente.backend.repositories.UserRepository;
 import lombok.AllArgsConstructor;
@@ -29,7 +29,7 @@ public class TodoItemService {
 	 * @return
 	 */
 	@Transactional(readOnly = true)
-	public List<TodoItem> getAllItemsByUserId(Long userId) {
+	public List<Item> getAllItemsByUserId(Long userId) {
 		return todoItemRepository.findByUserId(userId);
 	}
 
@@ -43,7 +43,7 @@ public class TodoItemService {
 	 * @return
 	 */
 	@Transactional
-	public TodoItem createItem(Long userId, TodoItem todoItem) {
+	public Item createItem(Long userId, Item todoItem) {
 		return userRepository.findById(userId).map(user -> {
 			todoItem.setUser(user);
 			return todoItemRepository.save(todoItem);
@@ -55,7 +55,7 @@ public class TodoItemService {
 	 */
 	@Transactional
 	public void deleteItem(Long userId, Long itemId) {
-		TodoItem item = todoItemRepository.findByIdAndUserId(itemId, userId).orElseThrow();
+		Item item = todoItemRepository.findByIdAndUserId(itemId, userId).orElseThrow();
 		todoItemRepository.delete(item);
 	}
 	

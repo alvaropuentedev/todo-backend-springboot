@@ -17,7 +17,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import dev.alvaropuente.backend.models.TodoItem;
+import dev.alvaropuente.backend.models.Item;
 import dev.alvaropuente.backend.services.TodoItemService;
 import lombok.AllArgsConstructor;
 
@@ -35,7 +35,7 @@ public class TodoItemController {
 	public ResponseEntity<?> getAllItemsByUserId(@PathVariable(value = "userId") Long userId) {
 		Map<String, Object> map = new HashMap<>();
 		try {
-			List<TodoItem> todoItemList = todoItemService.getAllItemsByUserId(userId);
+			List<Item> todoItemList = todoItemService.getAllItemsByUserId(userId);
 			return new ResponseEntity<>(todoItemList, HttpStatus.OK);
 		} catch (Exception e) {
 			map.put("message", e.getMessage());
@@ -45,7 +45,7 @@ public class TodoItemController {
 	}
 
 	@PostMapping("/user/{userId}/items")
-	public TodoItem createItem(@PathVariable(value = "userId") Long userId, @Validated @RequestBody TodoItem todoItem) {
+	public Item createItem(@PathVariable(value = "userId") Long userId, @Validated @RequestBody Item todoItem) {
 		return todoItemService.createItem(userId, todoItem);
 	}
 

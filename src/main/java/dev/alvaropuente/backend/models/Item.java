@@ -25,7 +25,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 @Table(name = "items", schema = "todo")
-public class TodoItem implements Serializable {
+public class Item implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 
