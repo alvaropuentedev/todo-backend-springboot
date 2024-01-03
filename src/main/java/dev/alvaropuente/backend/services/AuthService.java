@@ -1,18 +1,17 @@
 package dev.alvaropuente.backend.services;
 
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.stereotype.Service;
+
 import dev.alvaropuente.backend.auth.AuthResponse;
 import dev.alvaropuente.backend.auth.LoginRequest;
 import dev.alvaropuente.backend.auth.RegisterRequest;
 import dev.alvaropuente.backend.models.Role;
 import dev.alvaropuente.backend.models.User;
 import dev.alvaropuente.backend.repositories.UserRepository;
-import dev.alvaropuente.backend.services.JwtService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.stereotype.Service;
 
 @Service
 @RequiredArgsConstructor
@@ -24,14 +23,26 @@ public class AuthService {
     private final AuthenticationManager authenticationManager;
     
     public AuthResponse login(LoginRequest request) {
+    	// Authenticate the user using the AuthenticationManager
         authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(request.getUsername(), request.getPassword()));
-        UserDetails user = userRepository.findByUsername(request.getUsername()).orElseThrow();
+
+        // Get details of the authenticated user from the UserRepository
+        User user = userRepository.findByUsername(request.getUsername()).orElseThrow();
+
+        // get id_user from User
+        Long id_user = user.getId();
+
+        // Generate a JWT (JSON Web Token) using a specific service (jwtService)
         String token = jwtService.getToken(user);
+
+        // Build and return an authentication response that includes only the id_user
         return AuthResponse.builder()
                 .token(token)
                 .username(user.getUsername())
+                .id_user(id_user)
                 .build();
     }
+
 
     public AuthResponse register(RegisterRequest request) {
         User user = User.builder()

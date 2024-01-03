@@ -3,18 +3,18 @@ FROM eclipse-temurin:17-jdk AS build
 
 WORKDIR /app
 
-# Instala Maven manualmente
+# Install maven
 RUN apt-get update && \
     apt-get install -y maven
 
-# Copia solo el archivo pom.xml para descargar las dependencias
+# Copy only pom.xml file for download the dependency
 COPY pom.xml .
 COPY src ./src
 
 # Build the application using Maven
 RUN mvn clean package -DskipTests
 
-# Imagen final
+# Final imagen
 FROM eclipse-temurin:17-jdk-alpine
 
 # Set the working directory in the container

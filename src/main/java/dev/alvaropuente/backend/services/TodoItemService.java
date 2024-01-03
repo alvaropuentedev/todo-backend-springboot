@@ -1,50 +1,62 @@
 package dev.alvaropuente.backend.services;
 
-import dev.alvaropuente.backend.models.TodoItem;
-import dev.alvaropuente.backend.repositories.TodoItemRepository;
-import lombok.AllArgsConstructor;
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.time.LocalDateTime;
-import java.util.List;
-import java.util.Optional;
+import dev.alvaropuente.backend.models.Item;
+import dev.alvaropuente.backend.repositories.TodoItemRepository;
+import dev.alvaropuente.backend.repositories.UserRepository;
+import lombok.AllArgsConstructor;
 
 @Service
 @AllArgsConstructor
 public class TodoItemService {
 
+	@Autowired
+	private final TodoItemRepository todoItemRepository;
 
-    private final TodoItemRepository todoItemRepository;
+	@Autowired
+	UserRepository userRepository;
 
-    @Transactional(readOnly = true)
-    public List<TodoItem> getAllItems() {
-        return todoItemRepository.findAll();
-    }
-    @Transactional(readOnly = true)
-    public Optional<TodoItem> getById(Long id) {
-        return todoItemRepository.findById(id);
-    }
-    @Transactional
-    public TodoItem save(TodoItem todoItem) {
-        return todoItemRepository.save(todoItem);
-    }
-//    @Transactional
-//    public TodoItem save(TodoItem todoItem) {
-//        if(todoItem.getIdItem() == null) {
-//            todoItem.setCreatedAt(LocalDateTime.now());
-//        }
-//
-//        todoItem.setUpdatedAt(LocalDateTime.now());
-//        return todoItemRepository.save(todoItem);
-//    }
-    @Transactional
-    public void delete(Long id) {
-        todoItemRepository.deleteById(id);
-    }
-    @Transactional(readOnly = true)
-    public boolean existById(Long id) {
-        return todoItemRepository.existsById(id);
-    }
+	/**
+	 * Get all items from the user with the same id
+	 * 
+	 * @param userId
+	 * 
+	 * @return
+	 */
+	@Transactional(readOnly = true)
+	public List<Item> getAllItemsByUserId(Long userId) {
+		return todoItemRepository.findByUserId(userId);
+	}
+
+	/**
+	 * Create item
+	 * 
+	 * @param userId
+	 * 
+	 * @param todoItem
+	 * 
+	 * @return
+	 */
+	@Transactional
+	public Item createItem(Long userId, Item todoItem) {
+		return userRepository.findById(userId).map(user -> {
+			todoItem.setUser(user);
+			return todoItemRepository.save(todoItem);
+		}).orElseThrow();
+	}
+
+	/**
+	 * Delete item by user and item ID
+	 */
+	@Transactional
+	public void deleteItem(Long userId, Long itemId) {
+		Item item = todoItemRepository.findByIdAndUserId(itemId, userId).orElseThrow();
+		todoItemRepository.delete(item);
+	}
+	
 }
