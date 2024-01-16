@@ -25,7 +25,7 @@ import lombok.AllArgsConstructor;
 //@CrossOrigin(origins = {"https://todo-angular-beta.vercel.app"})
 @CrossOrigin(origins = { "https://todo-angular-beta.vercel.app", "http://localhost:4200/" })
 @AllArgsConstructor
-@RequestMapping("/api")
+@RequestMapping("/apitodo/")
 public class TodoItemController {
 
 	@Autowired

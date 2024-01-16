@@ -17,7 +17,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @CrossOrigin(origins = {"https://todo-angular-beta.vercel.app", "http://localhost:4200/"})
 //@CrossOrigin(origins = {"https://todo-angular-beta.vercel.app"})
-@RequestMapping("/auth")
+@RequestMapping("/apitodo/auth")
 @RequiredArgsConstructor
 public class AuthController {
 	
