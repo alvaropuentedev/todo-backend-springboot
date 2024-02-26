@@ -1,6 +1,7 @@
 package dev.alvaropuente.backend.models;
 
 import java.io.Serializable;
+import java.time.LocalDateTime;
 
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
@@ -16,14 +17,8 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
 
 @Entity
-@Data
-@NoArgsConstructor
-@AllArgsConstructor
 @Table(name = "items", schema = "todo")
 public class Item implements Serializable {
 
@@ -31,18 +26,63 @@ public class Item implements Serializable {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@Column(name = "id_item")
+	@Column(name = "id")
 	private Long id;
 
 	@Column(name = "description")
 	private String description;
 
 	@ManyToOne(fetch = FetchType.LAZY, optional = false)
-	@JoinColumn(name = "id_user", nullable = false)
+	@JoinColumn(name = "list_id", nullable = false)
 	@OnDelete(action = OnDeleteAction.CASCADE)
 	@JsonIgnore
-	private User user;
-//    private LocalDateTime createdAt;
-//    private LocalDateTime updatedAt;
+	private ItemList list;
+
+	@Column(name = "creation_date")
+	private LocalDateTime creationDate;
+
+	public Item() {
+		super();
+	}
+
+	public Item(Long id, String description, ItemList lists, LocalDateTime creationDate) {
+		super();
+		this.id = id;
+		this.description = description;
+		this.list = lists;
+		this.creationDate = creationDate;
+	}
+
+	public Long getId() {
+		return id;
+	}
+
+	public void setId(Long id) {
+		this.id = id;
+	}
+
+	public String getDescription() {
+		return description;
+	}
+
+	public void setDescription(String description) {
+		this.description = description;
+	}
+
+	public ItemList getList() {
+		return list;
+	}
+
+	public void setLists(ItemList list) {
+		this.list = list;
+	}
+
+	public LocalDateTime getCreationDate() {
+		return creationDate;
+	}
+
+	public void setCreationDate(LocalDateTime creationDate) {
+		this.creationDate = creationDate;
+	}
 
 }

@@ -1,11 +1,5 @@
 package dev.alvaropuente.backend.controllers;
 
-import dev.alvaropuente.backend.auth.AuthResponse;
-import dev.alvaropuente.backend.services.AuthService;
-import dev.alvaropuente.backend.auth.LoginRequest;
-import dev.alvaropuente.backend.auth.RegisterRequest;
-import lombok.RequiredArgsConstructor;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -14,15 +8,18 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import dev.alvaropuente.backend.dto.AuthResponse;
+import dev.alvaropuente.backend.dto.LoginRequest;
+import dev.alvaropuente.backend.dto.RegisterRequest;
+import dev.alvaropuente.backend.services.AuthService;
+
 @RestController
-@CrossOrigin(origins = {"https://todo-angular-beta.vercel.app", "http://localhost:4200/"})
-//@CrossOrigin(origins = {"https://todo-angular-beta.vercel.app"})
+@CrossOrigin(origins = {"https://todo-angular-beta.vercel.app", "http://localhost:4200/", "https://alvaropuente.dev/"})
 @RequestMapping("/apitodo/auth")
-@RequiredArgsConstructor
 public class AuthController {
 	
 	@Autowired
-    private final AuthService authService;
+    private AuthService authService;
 
     @PostMapping(value = "login")
     public ResponseEntity<AuthResponse> login(@RequestBody LoginRequest request) {

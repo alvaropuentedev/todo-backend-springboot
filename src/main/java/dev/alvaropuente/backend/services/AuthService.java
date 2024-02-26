@@ -1,33 +1,43 @@
 package dev.alvaropuente.backend.services;
 
+import java.time.LocalDateTime;
+
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import dev.alvaropuente.backend.auth.AuthResponse;
-import dev.alvaropuente.backend.auth.LoginRequest;
-import dev.alvaropuente.backend.auth.RegisterRequest;
+import dev.alvaropuente.backend.dto.AuthResponse;
+import dev.alvaropuente.backend.dto.LoginRequest;
+import dev.alvaropuente.backend.dto.RegisterRequest;
 import dev.alvaropuente.backend.models.Role;
 import dev.alvaropuente.backend.models.User;
 import dev.alvaropuente.backend.repositories.UserRepository;
-import lombok.RequiredArgsConstructor;
 
 @Service
-@RequiredArgsConstructor
 public class AuthService {
-
-    private final UserRepository userRepository;
-    private final JwtService jwtService;
-    private final PasswordEncoder passwordEncoder;
-    private final AuthenticationManager authenticationManager;
+	
+	@Autowired
+    private UserRepository userRepository;
+	
+	@Autowired
+    private JwtService jwtService;
+	
+	@Autowired
+    private PasswordEncoder passwordEncoder;
+	
+	@Autowired
+    private AuthenticationManager authenticationManager;
     
-    public AuthResponse login(LoginRequest request) {
+    public AuthResponse login(LoginRequest loginRequest) {
     	// Authenticate the user using the AuthenticationManager
-        authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(request.getUsername(), request.getPassword()));
+        authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(
+        		loginRequest.username(),
+        		loginRequest.password()));
 
         // Get details of the authenticated user from the UserRepository
-        User user = userRepository.findByUsername(request.getUsername()).orElseThrow();
+        User user = userRepository.findByUsername(loginRequest.username()).orElseThrow();
 
         // get id_user from User
         Long id_user = user.getId();
@@ -44,12 +54,13 @@ public class AuthService {
     }
 
 
-    public AuthResponse register(RegisterRequest request) {
+    public AuthResponse register(RegisterRequest registerRequest) {
         User user = User.builder()
-                .username(request.getUsername())
-                .password(passwordEncoder.encode(request.getPassword()))
-                .firstname(request.getFirstname())
-                .lastname(request.getLastname())
+                .username(registerRequest.username())
+                .password(passwordEncoder.encode(registerRequest.password()))
+                .firstname(registerRequest.firstname())
+                .lastname(registerRequest.lastname())
+                .creationDate(LocalDateTime.now())
                 .role(Role.USER)
                 .build();
         userRepository.save(user);
