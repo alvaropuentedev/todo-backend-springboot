@@ -14,6 +14,7 @@ import dev.alvaropuente.backend.dto.RegisterRequest;
 import dev.alvaropuente.backend.models.Role;
 import dev.alvaropuente.backend.models.User;
 import dev.alvaropuente.backend.repositories.UserRepository;
+import jakarta.transaction.Transactional;
 
 @Service
 public class AuthService {
@@ -68,6 +69,11 @@ public class AuthService {
         return AuthResponse.builder()
                 .token(jwtService.getToken(user))
                 .build();
+    }
+
+    @Transactional
+    public void deleteUser(Long user_id) {
+        userRepository.deleteById(user_id);
     }
 
 }

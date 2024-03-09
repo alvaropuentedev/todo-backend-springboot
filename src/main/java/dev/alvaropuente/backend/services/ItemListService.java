@@ -27,8 +27,8 @@ public class ItemListService {
 	 * @return
 	 */
 	@Transactional
-	public List<ItemList> getAllListsByUserId() {
-		return itemlistRepository.findAll();
+	public List<ItemList> getAllListsByUserId(Long user_id) {
+		return itemlistRepository.findByUserId(user_id);
 	}
 	
 	
