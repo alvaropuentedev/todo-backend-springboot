@@ -2,6 +2,7 @@ package dev.alvaropuente.backend.services;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.NoSuchElementException;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -22,18 +23,23 @@ public class ItemService {
 
 	/**
 	 * Get all items from the user with the same id
-	 * @param userId
+	 * @param list_id
 	 * @return
 	 */
 	@Transactional(readOnly = true)
 	public List<Item> getAllItemsByListId(Long list_id) {
-		return itemRepository.findByListId(list_id);
+		if (listsRepository.existsById(list_id)) {
+			return itemRepository.findByListId(list_id);
+		} else {
+			// Handle the case where the list does not exist, for example, by throwing an exception
+			throw new NoSuchElementException("The list with id " + list_id + " does not exist.");
+		}
 	}
 
 	/**
 	 * Create item
-	 * @param userId
-	 * @param todoItem
+	 * @param list_id
+	 * @param item
 	 * @return
 	 */
 	@Transactional

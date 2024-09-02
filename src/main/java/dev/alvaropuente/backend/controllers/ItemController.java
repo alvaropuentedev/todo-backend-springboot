@@ -3,6 +3,7 @@ package dev.alvaropuente.backend.controllers;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.NoSuchElementException;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -34,10 +35,12 @@ public class ItemController {
 		try {
 			List<Item> itemList = itemService.getAllItemsByListId(list_id);
 			return new ResponseEntity<>(itemList, HttpStatus.OK);
-		} catch (Exception e) {
+		} catch (NoSuchElementException e) {
 			map.put("message", e.getMessage());
+			return new ResponseEntity<>(map, HttpStatus.NOT_FOUND);
+		} catch (Exception e) {
+			map.put("message", "Internal server error");
 			return new ResponseEntity<>(map, HttpStatus.INTERNAL_SERVER_ERROR);
-
 		}
 	}
 

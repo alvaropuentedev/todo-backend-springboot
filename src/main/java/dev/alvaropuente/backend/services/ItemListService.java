@@ -1,16 +1,16 @@
 package dev.alvaropuente.backend.services;
 
-import java.time.LocalDateTime;
-import java.util.List;
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-
 import dev.alvaropuente.backend.models.ItemList;
 import dev.alvaropuente.backend.models.User;
 import dev.alvaropuente.backend.repositories.ItemlistRepository;
 import dev.alvaropuente.backend.repositories.UserRepository;
 import jakarta.transaction.Transactional;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 @Service
 public class ItemListService {
@@ -43,7 +43,20 @@ public class ItemListService {
         userRepository.save(user); // Guarda el usuario actualizado
         return "List Created!!"; // Devuelve la lista creada
 	}
-	
+
+	@Transactional
+	public void addUsersToList(Long listId, List<String> usernames) {
+		ItemList itemList = itemlistRepository.findById(listId).orElseThrow(() -> new IllegalArgumentException("List not found"));
+		List<User> users = new ArrayList<>();
+		for (String username : usernames) {
+			User user = userRepository.findByUsername(username)
+					.orElseThrow(() -> new IllegalArgumentException("User not found: " + username));
+			users.add(user);
+		}
+		itemList.getUser().addAll(users);
+		itemlistRepository.save(itemList);
+	}
+
 	@Transactional
 	public void deleteList(Long list_id) {
 		itemlistRepository.deleteItemListById(list_id);
