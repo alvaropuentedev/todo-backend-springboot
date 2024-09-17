@@ -9,20 +9,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import dev.alvaropuente.backend.models.Item;
 import dev.alvaropuente.backend.services.ItemService;
 
 @RestController
-@CrossOrigin(origins = { "https://todo-angular-beta.vercel.app", "http://localhost:4200/", "https://alvaropuente.dev/" })
+@CrossOrigin(origins = { "http://localhost:4200/", "https://alvaropuente.dev/" })
 @RequestMapping("/apitodo")
 public class ItemController {
 
@@ -47,6 +40,11 @@ public class ItemController {
 	@PostMapping("/list/{list_id}/items")
 	public Item createItem(@PathVariable(value = "list_id") Long list_id, @Validated @RequestBody Item item) {
 		return itemService.createItem(list_id, item);
+	}
+
+	@PutMapping("/list/{list_id}/{item_id}/items")
+	public Item updateItem(@PathVariable(value = "list_id") Long list_id, @PathVariable(value = "item_id") Long item_id, @Validated @RequestBody Item item) {
+		return itemService.updateItem(list_id, item_id, item);
 	}
 
 	@DeleteMapping("/item/{item_id}")
