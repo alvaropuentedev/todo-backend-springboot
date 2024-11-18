@@ -16,11 +16,14 @@ import dev.alvaropuente.backend.jwt.JwtAuthenticationFilter;
 @EnableWebSecurity
 public class SecurityConfig {
 
-	@Autowired
-	private JwtAuthenticationFilter jwtAuthenticationFilter;
+	private final JwtAuthenticationFilter jwtAuthenticationFilter;
 
-	@Autowired
-	private AuthenticationProvider authProvider;
+	private final AuthenticationProvider authProvider;
+
+	public SecurityConfig(JwtAuthenticationFilter jwtAuthenticationFilter, AuthenticationProvider authProvider) {
+		this.jwtAuthenticationFilter = jwtAuthenticationFilter;
+		this.authProvider = authProvider;
+	}
 
 	@Bean
 	SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {

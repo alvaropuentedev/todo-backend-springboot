@@ -19,11 +19,14 @@ import org.springframework.web.bind.annotation.RequestBody;
 @Service
 public class ItemService {
 
-    @Autowired
-    private ItemRepository itemRepository;
+    private final ItemRepository itemRepository;
 
-    @Autowired
-    private ItemlistRepository listsRepository;
+    private final ItemlistRepository listsRepository;
+
+    public ItemService(ItemRepository itemRepository, ItemlistRepository listsRepository) {
+        this.itemRepository = itemRepository;
+        this.listsRepository = listsRepository;
+    }
 
     /**
      * Get all items from the user with the same id

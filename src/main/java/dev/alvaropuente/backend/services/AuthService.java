@@ -19,18 +19,21 @@ import jakarta.transaction.Transactional;
 @Service
 public class AuthService {
 	
-	@Autowired
-    private UserRepository userRepository;
+	private final UserRepository userRepository;
 	
-	@Autowired
-    private JwtService jwtService;
+	private final JwtService jwtService;
 	
-	@Autowired
-    private PasswordEncoder passwordEncoder;
+	private final PasswordEncoder passwordEncoder;
 	
-	@Autowired
-    private AuthenticationManager authenticationManager;
-    
+	private final AuthenticationManager authenticationManager;
+
+    public AuthService(UserRepository userRepository, JwtService jwtService, PasswordEncoder passwordEncoder, AuthenticationManager authenticationManager) {
+        this.userRepository = userRepository;
+        this.jwtService = jwtService;
+        this.passwordEncoder = passwordEncoder;
+        this.authenticationManager = authenticationManager;
+    }
+
     public AuthResponse login(LoginRequest loginRequest) {
     	// Authenticate the user using the AuthenticationManager
         authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(
