@@ -29,7 +29,7 @@ public class ItemService {
     }
 
     /**
-     * Get all items from the user with the same id
+     * Get all items from a list
      *
      * @param list_id
      * @return
@@ -37,7 +37,7 @@ public class ItemService {
     @Transactional(readOnly = true)
     public List<Item> getAllItemsByListId(Long list_id) {
         if (listsRepository.existsById(list_id)) {
-            return itemRepository.findByListId(list_id);
+            return itemRepository.findByListIdOrderByIdAsc(list_id);
         } else {
             // Handle the case where the list does not exist, for example, by throwing an exception
             throw new NoSuchElementException("The list with id " + list_id + " does not exist.");
