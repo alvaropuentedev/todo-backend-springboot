@@ -25,16 +25,15 @@ public class ItemListService {
 	}
 
 	/**
-	 * Show List
+	 * GET all Lists by user ID
 	 * param user_id
 	 * return
 	 */
 	@Transactional
 	public List<ItemList> getAllListsByUserId(Long user_id) {
-		return itemlistRepository.findByUserId(user_id);
+		return itemlistRepository.findByUserIdOrderByListNameAsc(user_id);
 	}
-	
-	
+
 	@Transactional
 	public String createListforUser(Long user_id, ItemList list) {
 		User user = userRepository.findById(user_id).orElseThrow(

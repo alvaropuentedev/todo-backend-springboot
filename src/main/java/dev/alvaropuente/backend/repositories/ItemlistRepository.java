@@ -9,8 +9,8 @@ import org.springframework.data.jpa.repository.Query;
 import dev.alvaropuente.backend.models.ItemList;
 
 public interface ItemlistRepository extends JpaRepository<ItemList, Long> {
-	List<ItemList> findByUserId(Long user_id);
-	
+	List<ItemList> findByUserIdOrderByListNameAsc(Long userId);
+
 	@Modifying
 	@Query("DELETE FROM ItemList WHERE id = :list_id")
 	void deleteItemListById(Long list_id);
