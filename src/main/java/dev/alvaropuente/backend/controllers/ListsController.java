@@ -1,7 +1,6 @@
 package dev.alvaropuente.backend.controllers;
 
 import dev.alvaropuente.backend.models.ItemList;
-import dev.alvaropuente.backend.models.User;
 import dev.alvaropuente.backend.services.ItemListService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -10,6 +9,7 @@ import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Map;
 
 
 @RestController
@@ -33,7 +33,7 @@ public class ListsController {
     }
 
     @PostMapping("/user/{user_id}/list")
-    public String createListForUser(@PathVariable(value = "user_id") Long user_id, @RequestBody ItemList list) {
+    public Map<String, String> createListForUser(@PathVariable(value = "user_id") Long user_id, @RequestBody ItemList list) {
         return itemListService.createListforUser(user_id, list);
     }
 

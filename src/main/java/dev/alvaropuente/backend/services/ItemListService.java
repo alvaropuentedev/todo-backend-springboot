@@ -5,12 +5,12 @@ import dev.alvaropuente.backend.models.User;
 import dev.alvaropuente.backend.repositories.ItemlistRepository;
 import dev.alvaropuente.backend.repositories.UserRepository;
 import jakarta.transaction.Transactional;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
-import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Service
 public class ItemListService {
@@ -35,7 +35,7 @@ public class ItemListService {
 	}
 
 	@Transactional
-	public String createListforUser(Long user_id, ItemList list) {
+	public Map<String, String> createListforUser(Long user_id, ItemList list) {
 		User user = userRepository.findById(user_id).orElseThrow(
 				() -> new IllegalArgumentException("User not found"));
         list.getUser().add(user);
@@ -43,7 +43,10 @@ public class ItemListService {
         ItemList createdList = itemlistRepository.save(list);
         user.getItemLists().add(createdList);
         userRepository.save(user);
-        return "List Created!!";
+
+		Map<String, String> response = new HashMap<>();
+		response.put("message", "List Created!!");
+		return response;
 	}
 
 	/**
