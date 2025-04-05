@@ -33,7 +33,7 @@ public class ListsController {
     }
 
     @PostMapping("/user/{user_id}/list")
-    public Map<String, String> createListForUser(@PathVariable(value = "user_id") Long user_id, @RequestBody ItemList list) {
+    public ItemList createListForUser(@PathVariable(value = "user_id") Long user_id, @RequestBody ItemList list) {
         return itemListService.createListforUser(user_id, list);
     }
 

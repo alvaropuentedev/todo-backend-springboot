@@ -35,7 +35,7 @@ public class ItemListService {
 	}
 
 	@Transactional
-	public Map<String, String> createListforUser(Long user_id, ItemList list) {
+	public ItemList createListforUser(Long user_id, ItemList list) {
 		User user = userRepository.findById(user_id).orElseThrow(
 				() -> new IllegalArgumentException("User not found"));
         list.getUser().add(user);
@@ -44,9 +44,7 @@ public class ItemListService {
         user.getItemLists().add(createdList);
         userRepository.save(user);
 
-		Map<String, String> response = new HashMap<>();
-		response.put("message", "List Created!!");
-		return response;
+		return createdList;
 	}
 
 	/**
