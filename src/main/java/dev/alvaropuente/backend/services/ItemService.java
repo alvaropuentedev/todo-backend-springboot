@@ -4,6 +4,7 @@ import java.time.LocalDateTime;
 import java.util.List;
 import java.util.NoSuchElementException;
 
+import dev.alvaropuente.backend.handler.ItemWebSocketHandler;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -15,12 +16,13 @@ import dev.alvaropuente.backend.repositories.ItemlistRepository;
 public class ItemService {
 
     private final ItemRepository itemRepository;
-
     private final ItemlistRepository listsRepository;
+    private final ItemWebSocketHandler itemWebSocketHandler;
 
-    public ItemService(ItemRepository itemRepository, ItemlistRepository listsRepository) {
+    public ItemService(ItemRepository itemRepository, ItemlistRepository listsRepository, ItemWebSocketHandler itemWebSocketHandler) {
         this.itemRepository = itemRepository;
         this.listsRepository = listsRepository;
+        this.itemWebSocketHandler = itemWebSocketHandler;
     }
 
     /**
@@ -48,11 +50,15 @@ public class ItemService {
      */
     @Transactional
     public Item createItem(Long list_id, Item item) {
-        return listsRepository.findById(list_id).map(list -> {
+        Item savedItem = listsRepository.findById(list_id).map(list -> {
             item.setLists(list);
             item.setCreationDate(LocalDateTime.now());
             return itemRepository.save(item);
         }).orElseThrow(() -> new IllegalArgumentException("List not found"));
+        // Send a message to all connected WebSocket clients
+        String message = "{\"message\": \"New item added\"}";
+        itemWebSocketHandler.sendMessageToAll(message);
+        return savedItem;
     }
 
     /**
@@ -65,11 +71,15 @@ public class ItemService {
      */
     @Transactional
     public Item updateItem(Long list_id, Long item_id, Item item) {
-        return itemRepository.findByListIdAndId(list_id, item_id).map(existingItem -> {
+        Item updatedItem = itemRepository.findByListIdAndId(list_id, item_id).map(existingItem -> {
             existingItem.setDescription(item.getDescription());
             existingItem.setCreationDate(LocalDateTime.now());
             return itemRepository.save(existingItem);
         }).orElseThrow(() -> new IllegalArgumentException("Item not found"));
+        // Send a message to all connected WebSocket clients
+        String message = "{\"message\": \"Item updated\", \"itemId\": " + item_id + "}";
+        itemWebSocketHandler.sendMessageToAll(message);
+        return updatedItem;
     }
 
     /**
@@ -78,6 +88,9 @@ public class ItemService {
     @Transactional
     public void deleteItem(Long item_id) {
         itemRepository.deleteItemById(item_id);
+        // Send a message to all connected WebSocket clients
+        String message = "{\"message\": \"Item deleted\", \"itemId\": " + item_id + "}";
+        itemWebSocketHandler.sendMessageToAll(message);
     }
 
 }
