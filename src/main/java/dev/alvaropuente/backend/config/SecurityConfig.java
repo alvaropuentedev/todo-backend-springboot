@@ -1,5 +1,6 @@
 package dev.alvaropuente.backend.config;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationProvider;
@@ -14,6 +15,8 @@ import dev.alvaropuente.backend.jwt.JwtAuthenticationFilter;
 @Configuration
 @EnableWebSecurity
 public class SecurityConfig {
+	@Value("${PERMIT_ALL_URLS}")
+	private String[] PERMIT_ALL_URLS;
 
 	private final JwtAuthenticationFilter jwtAuthenticationFilter;
 
@@ -29,7 +32,7 @@ public class SecurityConfig {
 		http.csrf(csrf -> csrf.disable())
 				.authorizeHttpRequests(
 						authRequest -> authRequest
-						.requestMatchers("/apitodo/auth/**", "/apitodo/ws/items").permitAll()
+						.requestMatchers(PERMIT_ALL_URLS).permitAll()
 						.anyRequest().authenticated())
 				.sessionManagement(
 						sessionManager -> sessionManager.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
