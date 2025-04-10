@@ -54,8 +54,8 @@ public class ListsController {
     }
 
 
-    @DeleteMapping("/list/{list_id}")
-    public void deleteList(@PathVariable(value = "list_id") Long list_id) {
-        itemListService.deleteList(list_id);
+    @DeleteMapping("/user/{user_id}/list/{list_id}")
+    public void deleteList(@PathVariable(value = "user_id") Long userId, @PathVariable(value = "list_id") Long listId) {
+        itemListService.deleteList(userId, listId);
     }
 }
