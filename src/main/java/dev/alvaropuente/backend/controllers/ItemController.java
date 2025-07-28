@@ -15,7 +15,7 @@ import dev.alvaropuente.backend.models.Item;
 import dev.alvaropuente.backend.services.ItemService;
 
 @RestController
-@CrossOrigin(origins = { "http://localhost:4200/", "https://alvaropuente.dev/" })
+@CrossOrigin(origins = { "http://192.168.50.173:4200", "http://localhost:4200/", "https://alvaropuente.dev/" })
 @RequestMapping("/apitodo")
 public class ItemController {
 

@@ -16,7 +16,7 @@ import dev.alvaropuente.backend.dto.RegisterRequest;
 import dev.alvaropuente.backend.services.AuthService;
 
 @RestController
-@CrossOrigin(origins = {"https://todo-angular-beta.vercel.app", "http://localhost:4200/", "https://alvaropuente.dev/"})
+@CrossOrigin(origins = {"http://192.168.50.173:4200", "http://localhost:4200/", "https://alvaropuente.dev/"})
 @RequestMapping("/apitodo/auth")
 public class AuthController {
 	
